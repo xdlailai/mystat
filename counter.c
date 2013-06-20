@@ -2,11 +2,9 @@
 
 void init()
 {
-  char dev[32] = "eth0";
-  char ipaddr[20];
   int nsocket;
   struct ifreq struReqip;
-  //strncpy(dev, data.interface, strlen(data.interface));
+  strncpy(dev, "eth0", 32);
   //strncpy(data.interface, dev,  strlen(dev));
    //获取IP
   nsocket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -20,7 +18,6 @@ void init()
 
 void listenpck()
 {
-  char* dev = "eth0";
   pcap_t* descr;
   const u_char *packet;
   struct pcap_pkthdr hdr;
@@ -49,10 +46,27 @@ int packetcheck(const u_char* packet, unsigned long len)
   ethernet = (struct sniff_ethernet*)(packet);
   ip = (struct sniff_ip*)(packet + SIZE_ETHERNET);
   if(IP_V(ip) != 0x04)
-    printf("this is not a ipv4 packet\n");
+    {
+      printf("this is not a ipv4 packet\n");
+      return 1;
+    }
+  char myip_src[16];
+  char myip_dst[16];
+  strncpy(myip_src, inet_ntoa(ip->ip_src), 16);
+  strncpy(myip_dst, inet_ntoa(ip->ip_dst), 16);
   int lenth =ntohs(ip->ip_len);
-  printf("%d %d\n", len, lenth);
-  printf("%s, %s",inet_ntoa(ip->ip_src), inet_ntoa(ip->ip_dst));
+  if(strcmp(myip_src, ipaddr) == 0)
+  {
+    printf("this is tx\n");
+    printf("%d\n", lenth);
+    printf("%s, %s\n",myip_src, inet_ntoa(ip->ip_dst));
+  }
+  if(strcmp(myip_dst, ipaddr) == 0)
+  {
+    printf("this is rx\n");
+    printf("%d\n", lenth);
+    printf("%s, %s\n",inet_ntoa(ip->ip_src), myip_dst);
+  }
 
   return 1;
 
