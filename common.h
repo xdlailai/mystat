@@ -23,6 +23,15 @@
 #define LOCKTRYLIMIT 5
 
 typedef struct {
+  char name[32];
+  int filled;
+  uint64_t rx;
+  uint64_t tx;
+  uint64_t rxp;
+  uint64_t txp;
+} FLOWBUF;
+
+typedef struct {
   time_t date;
   uint64_t rx, tx;
   int rxk, txk;
@@ -58,9 +67,11 @@ typedef enum PrintType {
 } PrintType;
 /*common functions*/
 int printe(PrintType type);
+int initbuf();
 
 /*common variables*/
 DATA data;
+FLOWBUF flowbuf;
 char dev[32];
 char ipaddr[20];
 char errorstring[512];

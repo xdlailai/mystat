@@ -24,3 +24,10 @@ int printe(PrintType type)
 
   }
 }
+
+int initbuf()
+{
+  flowbuf.rx = 0;
+  flowbuf.tx = 0;
+  flowbuf.filled = 0;
+}

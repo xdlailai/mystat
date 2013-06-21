@@ -42,6 +42,7 @@ int packetcheck(const u_char* packet, unsigned long len)
   const struct sniff_ethernet *ethernet;
   const struct sniff_ip *ip;
   char src;
+  int x_signal = 0; /*流量方向标志，0 非有效包 1 上传流量 2 下载流量*/
   u_int size_ip;
   ethernet = (struct sniff_ethernet*)(packet);
   ip = (struct sniff_ip*)(packet + SIZE_ETHERNET);
@@ -57,17 +58,34 @@ int packetcheck(const u_char* packet, unsigned long len)
   int lenth =ntohs(ip->ip_len);
   if(strcmp(myip_src, ipaddr) == 0)
   {
+    xsignal = 1;
     printf("this is tx\n");
     printf("%d\n", lenth);
     printf("%s, %s\n",myip_src, inet_ntoa(ip->ip_dst));
   }
   if(strcmp(myip_dst, ipaddr) == 0)
   {
+    xsignal = 2;
     printf("this is rx\n");
     printf("%d\n", lenth);
     printf("%s, %s\n",inet_ntoa(ip->ip_src), myip_dst);
   }
-
+  updateflowbuf(xsignal, length);
   return 1;
+
+}
+
+int updateflowbuf(int sig, int len)
+{
+  if(sig == 0){
+    printf("this packet invalid\n");
+  }else(sig == 1){
+    flowbuf.tx += len;
+    printf("tx packet added");
+  }else(sig == 2){
+    flowbuf.rx += len;
+    printf("rx packet added");
+  }
+
 
 }
