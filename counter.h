@@ -30,4 +30,5 @@ int packetcheck(const u_char *packet, unsigned long len);
 int updateflowbuf(int sig, int len);
 void bufstation();
 void parseflowbuf();
+void addtraffic(uint64_t *destmb, int *destkb, uint64_t srcmb, int srckb);
 #endif

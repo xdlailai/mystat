@@ -89,6 +89,7 @@ void initdb(void)
   }
   data.day[0].used=data.month[0].used=1;
   data.day[0].date=current;
+  data.month[0].month=current;
 }
 
 int writedb(const char *iface, const char *dirname, int newdb)
