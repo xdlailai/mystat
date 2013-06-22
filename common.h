@@ -27,8 +27,7 @@ typedef struct {
   int filled;
   uint64_t rx;
   uint64_t tx;
-  uint64_t rxp;
-  uint64_t txp;
+  time_t date;
 } FLOWBUF;
 
 typedef struct {

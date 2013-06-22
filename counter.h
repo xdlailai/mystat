@@ -28,4 +28,6 @@ void init();
 void listenpck();
 int packetcheck(const u_char *packet, unsigned long len);
 int updateflowbuf(int sig, int len);
+void bufstation();
+void parseflowbuf();
 #endif

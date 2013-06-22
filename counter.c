@@ -1,4 +1,5 @@
 #include "counter.h"
+#include "dbaccess.h"
 
 void init()
 {
@@ -86,6 +87,57 @@ int updateflowbuf(int sig, int len)
     flowbuf.rx += len;
     printf("rx packet added");
   }
+  bufstation();
+//  time_t current;
+//  current = time(NULL);
+//  flowbuf.date = current;
+/*暂时先不用时间，以后看*/
+}
 
+void bufstation()
+{
+  if((flowbuf.rx >= 100000) || (flowbuf.tx >= 100000) )
+    flowbuf.filled = 1;
+}
+
+void parseflowbuf()
+{
+  uint64_t rxchange = 0, txchange = 0; /*rx change in MB*/
+  uint64_t rxkchange = 0, txkchange = 0; /*changes in the KB counters*/
+  time_t current;
+  struct tm *d;
+  int day, month, year;
+  uint64_t buf_rx = flowbuf.rx;
+  uint64_t buf_tx = flowbuf.tx;
+  txchange = buf_tx/1048576; /*1024/1024*/
+  txkchange = (buf_tx/1024)%1024;
+  rxchange = buf_rx/1048576;
+  rxkchange = (buf_rx/1024)%1024;
+  addtraffic(&data.totalrx, &data.totalrxk, rxchange, rxkchange);
+  addtraffic(&data.totaltx, &data.totaltxk, txchange, txkchange);
+  /*update days and months*/
+  addtraffic(&data.day[0].rx, &data.day[0].rxk, rxchange, rxkchange);
+  addtraffic(&data.day[0].tx, &data.day[0].txk, txchange, txkchange);
+  addtraffic(&data.month[0].rx, &data.month[0].rxk, rxchange,rxkchange);
+  addtraffic(&data.month[0].tx, &data.month[0].txk, txchange,txkchange);
+
+  d = localtime(&current);
+  day = d->tm_mday;
+  month = d->tm_mon;
+  year = d->tm_year;
+
+  /*rotate days in database if needed */
+  d=localtime(&data.day[0].date);
+  if((d->tm_mday!=day) || (d->tm_mon!=month) || (d->tm_year!=year)){
+    if( (data.day[0].rx==0) && (data.day[0].tx==0) && (data.day[0].rxk==0) && (data.day[0].txk==0))
+      data.day[0].date=current;
+    else
+      rotatedays();
+  }
+
+  /*rotate months in data if needed */
+  d=localtime(&data.month[0].month);
+  if(d->tm_mon != month)
+    rotatemonths();
 
 }
