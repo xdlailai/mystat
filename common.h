@@ -21,7 +21,8 @@
 #define DATABASEDIR  "/var/lib/mystat"
 #define DEFIFACE "eth0"
 #define LOCKTRYLIMIT 5
-
+#define MYSTATVERSION "1.11"
+#define XMLVERSION 1
 typedef struct {
   char name[32];
   int filled;
@@ -66,7 +67,7 @@ typedef enum PrintType {
 } PrintType;
 /*common functions*/
 int printe(PrintType type);
-int initbuf();
+int initbuf(void);
 
 /*common variables*/
 DATA data;
@@ -75,4 +76,5 @@ char dev[32];
 char ipaddr[20];
 char errorstring[512];
 int debug;
+FILE *dataxml;
 #endif

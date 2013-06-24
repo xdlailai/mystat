@@ -1,10 +1,12 @@
 #include "counter.h"
 #include "dbaccess.h"
+#include "dbshow.h"
+#include "dbxml.h"
 
-void init()
+void init(void)
 {
   initbuf();
-  initdb();
+//  initdb();
   int nsocket;
   struct ifreq struReqip;
   strncpy(dev, "eth0", 32);
@@ -19,7 +21,7 @@ void init()
 
 }
 
-void listenpck()
+void listenpck(void)
 {
   pcap_t* descr;
   const u_char *packet;
@@ -28,11 +30,11 @@ void listenpck()
   descr = pcap_open_live(dev,BUFSIZ,0,0,errbuf);
   if(descr == NULL)
   {
-    printf("pcap_open_live(): %s\n",errbuf);
+    //printf("pcap_open_live(): %s\n",errbuf);
     exit(1);
   }
   else
-    printf("start counting!");
+    //printf("start counting!");
   for(;;)
   {
     packet = pcap_next(descr,&hdr);
@@ -75,10 +77,14 @@ int packetcheck(const u_char* packet, unsigned long len)
   }
   updateflowbuf(xsignal, lenth);
   if(flowbuf.filled == 1){
-    printf("flowbuf.rx %d\n", flowbuf.rx);
-    printf("flowbuf.tx %d\n", flowbuf.tx);
+//    printf("flowbuf.rx %d\n", flowbuf.rx);
+//    printf("flowbuf.tx %d\n", flowbuf.tx);
+    int newdb = readdb("eth0", "/home/fly100");
     parseflowbuf();
     initbuf();
+    writedb("eth0", "/home/fly100", newdb);
+    //showdb(4);
+    showxml();
   }
   return 1;
 
@@ -102,13 +108,13 @@ int updateflowbuf(int sig, int len)
 /*暂时先不用时间，以后看*/
 }
 
-void bufstation()
+void bufstation(void)
 {
   if((flowbuf.rx >= 102400) || (flowbuf.tx >= 102400) )
     flowbuf.filled = 1;
 }
 
-void parseflowbuf()
+void parseflowbuf(void)
 {
   uint64_t rxchange = 0, txchange = 0; /*rx change in MB*/
   uint64_t rxkchange = 0, txkchange = 0; /*changes in the KB counters*/
@@ -141,7 +147,7 @@ void parseflowbuf()
   /*rotate days in database if needed */
   d=localtime(&data.day[0].date);
   if((d->tm_mday!=day) || (d->tm_mon!=month) || (d->tm_year!=year)){
-    printf("day rotated\n");
+    //printf("day rotated\n");
     if( (data.day[0].rx==0) && (data.day[0].tx==0) && (data.day[0].rxk==0) && (data.day[0].txk==0))
       data.day[0].date=current;
     else
@@ -154,12 +160,13 @@ void parseflowbuf()
     rotatemonths();
 
   /*test*/
-  printf(" data download %llu M, %dK\n", data.totalrx, data.totalrxk);
+  /*printf(" data download %llu M, %dK\n", data.totalrx, data.totalrxk);
   printf(" data upload %llu M, %dK\n", data.totaltx, data.totaltxk);
   printf(" day download %llu M, %dK\n", data.day[0].rx, data.day[0].rxk);
   printf(" day upload %llu M, %dK\n", data.day[0].tx, data.day[0].txk);
   printf(" month download %llu M, %dK\n", data.month[0].rx, data.month[0].rxk);
   printf(" month upload %llu M, %dK\n", data.month[0].tx, data.month[0].txk);
+  */
 }
 
 

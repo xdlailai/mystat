@@ -24,11 +24,11 @@ struct sniff_ip{
 #define IP_V(ip) (((ip)->ip_vhl) >> 4)
 #define SIZE_ETHERNET 14
 
-void init();
-void listenpck();
+void init(void);
+void listenpck(void);
 int packetcheck(const u_char *packet, unsigned long len);
 int updateflowbuf(int sig, int len);
-void bufstation();
-void parseflowbuf();
+void bufstation(void);
+void parseflowbuf(void);
 void addtraffic(uint64_t *destmb, int *destkb, uint64_t srcmb, int srckb);
 #endif
