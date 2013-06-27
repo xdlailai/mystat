@@ -3,7 +3,7 @@
 
 void showxml(void)
 {
-  dataxml = fopen("/home/fly100/dataxml", "w");
+  dataxml = fopen(XMLBASEDIR, "w");
   int i;
 //  fprintf(dataxml, "<?xml version=\"%s\" xmlversion=\"%d\"?>\n", MYSTATVERSION, XMLVERSION);
   fprintf(dataxml, " <interface id=\"%s\">\n", data.interface);

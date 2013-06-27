@@ -9,7 +9,7 @@ void init(void)
 //  initdb();
   int nsocket;
   struct ifreq struReqip;
-  strncpy(dev, "eth0", 32);
+  strncpy(dev, DEFIFACE, 32);
   //strncpy(data.interface, dev,  strlen(dev));
    //获取IP
   nsocket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -79,10 +79,10 @@ int packetcheck(const u_char* packet, unsigned long len)
   if(flowbuf.filled == 1){
 //    printf("flowbuf.rx %d\n", flowbuf.rx);
 //    printf("flowbuf.tx %d\n", flowbuf.tx);
-    int newdb = readdb("eth0", "/home/fly100");
+    int newdb = readdb(DEFIFACE, DATABASEDIR);
     parseflowbuf();
     initbuf();
-    writedb("eth0", "/home/fly100", newdb);
+    writedb(DEFIFACE, DATABASEDIR, newdb);
     //showdb(4);
     showxml();
   }

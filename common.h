@@ -16,9 +16,11 @@
 #include <time.h>
 #include <sys/file.h>
 #include <sys/statvfs.h>
+#include <fcntl.h>
+#include <signal.h>
 
-
-#define DATABASEDIR  "/var/lib/mystat"
+#define DATABASEDIR  "/home/fly100"
+#define XMLBASEDIR "/var/www/dataxml"
 #define DEFIFACE "eth0"
 #define LOCKTRYLIMIT 5
 #define MYSTATVERSION "1.11"
