@@ -25,7 +25,7 @@ int printe(PrintType type)
   }
 }
 
-int initbuf()
+int initbuf(void)
 {
   flowbuf.rx = 0;
   flowbuf.tx = 0;

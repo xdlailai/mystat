@@ -16,19 +16,21 @@
 #include <time.h>
 #include <sys/file.h>
 #include <sys/statvfs.h>
+#include <fcntl.h>
+#include <signal.h>
 
-
-#define DATABASEDIR  "/var/lib/mystat"
+#define DATABASEDIR  "/home/fly100"
+#define XMLBASEDIR "/var/www/dataxml"
 #define DEFIFACE "eth0"
 #define LOCKTRYLIMIT 5
-
+#define MYSTATVERSION "1.11"
+#define XMLVERSION 1
 typedef struct {
   char name[32];
   int filled;
   uint64_t rx;
   uint64_t tx;
-  uint64_t rxp;
-  uint64_t txp;
+  time_t date;
 } FLOWBUF;
 
 typedef struct {
@@ -67,7 +69,7 @@ typedef enum PrintType {
 } PrintType;
 /*common functions*/
 int printe(PrintType type);
-int initbuf();
+int initbuf(void);
 
 /*common variables*/
 DATA data;
@@ -76,4 +78,5 @@ char dev[32];
 char ipaddr[20];
 char errorstring[512];
 int debug;
+FILE *dataxml;
 #endif
