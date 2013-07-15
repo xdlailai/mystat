@@ -1,10 +1,77 @@
 #include "common.h"
 #include "mystat.h"
 #include "counter.h"
+#include "pthread.h"
+#include "mod.h"
+void print_data()
+{
+  while(1){
+    showxml();
+    sleep(3);
+  }
+}
+void get_cpu_record()
+{
+  read_cpu_stats();
+  sleep(5);
+  while(1){
+    read_cpu_stats();
+    sleep(5);
+  }
+}
+void get_mem_record()
+{
+  while(1){
+    read_mem_stats();
+    sleep(5);
+  }
+}
+void get_load_record()
+{
+  while(1){
+    read_load_stats();
+    sleep(5);
+  }
+}
+void get_partion_record()
+{
+  while(1){
+    read_partion_stat();
+    sleep(5);
+  }
+}
+void get_traffic_record()
+{
+  while(1){
+    read_traffic_stats();
+    sleep(5);
+  }
+}
+
 
 int main(int argc, const char *argv[])
 {
-  daemonize();
+  pthread_t pd_listen, pd_cpu, pd_mem, pd_load, pd_partition, pd_traffic;
+  int error;
+  error = pthread_create(&pd_listen, NULL, print_data, NULL);
+  if(error!=0)
+    printf("error pthread_create");
+  error = pthread_create(&pd_cpu, NULL, get_cpu_record, NULL);
+  if(error!=0)
+    printf("error pthread_cpu");
+  error = pthread_create(&pd_mem, NULL, get_mem_record, NULL);
+  if(error!=0)
+    printf("error pthread_mem");
+  error = pthread_create(&pd_load, NULL, get_load_record, NULL);
+  if(error!=0)
+    printf("error pthread_load");
+  error = pthread_create(&pd_partition, NULL, get_partion_record, NULL);
+  if(error!=0)
+    printf("error pthread_partion");
+  error = pthread_create(&pd_traffic, NULL, get_traffic_record, NULL);
+  if(error!=0)
+    printf("error pthread_traffic");
+//  daemonize();
   init();
   listenpck();
   return 0;

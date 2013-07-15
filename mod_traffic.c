@@ -20,15 +20,7 @@ void read_traffic_stats()
       stattraffic.upload_rate = (double)(stattraffic.upload_now - stattraffic.upload_ago)/5;
       stattraffic.download_ago = stattraffic.download_now;
       stattraffic.upload_ago  = stattraffic.upload_now;
-      printf("%llu %llu %lf %lf\n", stattraffic.download_now, stattraffic.upload_now, stattraffic.download_rate, stattraffic.upload_rate);
+//      printf("%llu %llu %lf %lf\n", stattraffic.download_now, stattraffic.upload_now, stattraffic.download_rate, stattraffic.upload_rate);
     }
   }
-}
-int main(int argc, const char *argv[])
-{
-  while(1){
-    read_traffic_stats();
-    sleep(5);
-  }
-  return 0;
 }

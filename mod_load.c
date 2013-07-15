@@ -1,6 +1,6 @@
 #include "common.h"
 
-void read_stat_load()
+void read_load_stats()
 {
   int load_tmp[3];
   FILE *fp;
@@ -23,18 +23,4 @@ void read_stat_load()
 
 }
 
-void set_load_record()
-{
-  while(1){
-    read_stat_load();
-    sleep(5);
-    printf("%lf\n", statload.load_avg);
-  }
 
-}
-
-int main(int argc, const char *argv[])
-{
-  set_load_record();
-  return 0;
-}

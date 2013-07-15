@@ -28,15 +28,10 @@ void read_partion_stat()
         statpartion.used = used *scale;
         statpartion.pct = pct;
         strncpy(statpartion.dir , mnt->mnt_dir, 32);
-        printf(" %s %ld %ld %f\n", statpartion.dir, statpartion.total, statpartion.used,statpartion.pct);
+//        printf(" %s %ld %ld %f\n", statpartion.dir, statpartion.total, statpartion.used,statpartion.pct);
       }
     }
   }
     endmntent(mntfile);
 }
 
-int main(int argc, const char *argv[])
-{
-  read_partion_stat();
-  return 0;
-}

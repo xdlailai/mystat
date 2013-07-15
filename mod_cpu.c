@@ -33,7 +33,7 @@ void read_cpu_stats()
   if(statcpu.cpu_idle >= statcpu.cpu_idle_last){
     statcpu.used = 100.0 - (double)(statcpu.cpu_idle - statcpu.cpu_idle_last) * 100.0 /(total_now-total_last);
   }
-  printf("%lf \n",  statcpu.used);
+//  printf("%lf \n",  statcpu.used);
   statcpu.cpu_user_last = statcpu.cpu_user;
   statcpu.cpu_nice_last = statcpu.cpu_nice;
   statcpu.cpu_sys_last = statcpu.cpu_sys;
@@ -45,7 +45,7 @@ void read_cpu_stats()
   statcpu.cpu_guest_last = statcpu.cpu_guest;
 }
 
-void set_cpu_record()
+/*void set_cpu_record()
 {
   read_cpu_stats();
   sleep(5);
@@ -54,9 +54,4 @@ void set_cpu_record()
     sleep(5);
 //    printf("%lf\n", statcpu.cpu_nice);
   }
-}
-int main(int argc, const char *argv[])
-{
-  set_cpu_record();
-  return 0;
-}
+}*/

@@ -1,6 +1,6 @@
 #include "common.h"
 
-static void read_mem_stats()
+void read_mem_stats()
 {
   FILE *fp;
   char line[LEN_128];
@@ -60,8 +60,3 @@ void set_mem_record()
   }
 }
 
-int main(int argc, const char *argv[])
-{
-  set_mem_record();
-  return 0;
-}

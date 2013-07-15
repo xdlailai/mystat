@@ -49,9 +49,22 @@ void showxml(void)
   fprintf(dataxml, "   </tops>\n");
 
   fprintf(dataxml, "  </traffic>\n");
+  fprintf(dataxml, "  <info>\n");
+  fprintf(dataxml, "   <cpu>%.2lf</cpu>\n", statcpu.used);
+  fprintf(dataxml, "   <mem>%.2lf</mem>\n", statmem.used);
+  fprintf(dataxml, "   <load>%.2lf</load>\n", statload.load_avg);
+  fprintf(dataxml, "   <mem>%.2lf</mem>\n", statmem.used);
+  fprintf(dataxml, "   <download_rate>%.2lf</download_rate>\n", stattraffic.download_rate/1024);
+  fprintf(dataxml, "   <upload_rate>%.2lf</upload_rate>\n", stattraffic.upload_rate/1024);
+  fprintf(dataxml, "   <partition>\n");
+  fprintf(dataxml, "    <dir>%s</dir>\n", statpartion.dir);
+  fprintf(dataxml, "    <total>%ld</total>\n", statpartion.total/1024);
+  fprintf(dataxml, "    <used>%ld</used>\n", statpartion.used/1024);
+  fprintf(dataxml, "    <pct>%.2lf</pct>\n", statpartion.pct);
+  fprintf(dataxml, "   </partition>\n");
+  fprintf(dataxml, "  </info>\n");
   fprintf(dataxml, " </interface>\n");
 
-//  fprintf(dataxml, "</mystat>\n");
 
   fclose(dataxml);
 }
