@@ -40,7 +40,18 @@ function validate_input()
 function get_xml_data()
 {
   global $day, $month, $top, $interface, $total_rx, $total_tx;
+  global $cpu, $mem, $load, $download_rate, $upload_rate;
+  global $partition_dir, $partition_total,$partition_used, $partition_pct;
   $xml=simplexml_load_file("dataxml");
+  $cpu=$xml->info->cpu;
+  $mem=$xml->info->mem;
+  $load=$xml->info->load;
+  $download_rate=$xml->info->download_rate;
+  $upload_rate=$xml->info->upload_rate;
+  $partition_dir=$xml->info->partition->dir;
+  $partition_total=$xml->info->partition->total;
+  $partition_used=$xml->info->partition->used;
+  $partition_pct=$xml->info->partition->pct;
   $interface= $xml->id;
   $created_year=$xml->created->date->year;
   $created_month=$xml->created->date->month;

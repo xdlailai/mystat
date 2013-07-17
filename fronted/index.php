@@ -56,6 +56,8 @@
     function write_summary()
     {
         global $top,$day,$month,$total_rx, $total_tx;
+        global $cpu, $mem, $load, $download_rate, $upload_rate;
+        global $partition_dir, $partition_total, $partition_used, $partition_pct;
 
         $trx = $total_rx;
         $ttx = $total_tx;
@@ -80,8 +82,42 @@
         $sum[3]['tx'] = $ttx;
 
         write_data_table('Summary', $sum);
+
+
+        print "<tr>";
+        print "<td class=\"label\" style=\"width:120px;\">&nbsp;</td>";
+        print "<td class=\"label\">".cpu利用率."</td>";
+        print "<td class=\"label\"> $cpu </td>";
+        print "</tr>\n";
+        print "<tr>";
+        print "<td class=\"label\" style=\"width:120px;\">&nbsp;</td>";
+        print "<td class=\"label\">".内存使用率."</td>";
+        print "<td class=\"label\"> $mem</td>";
+        print "</tr>\n";
+        print "<tr>";
+        print "<td class=\"label\" style=\"width:120px;\">&nbsp;</td>";
+        print "<td class=\"label\">".系统负载."</td>";
+        print "<td class=\"label\"> $load </td>";
+        print "</tr>\n";
+        print "<tr>";
+        print "<td class=\"label\" style=\"width:120px;\">&nbsp;</td>";
+        print "<td class=\"label\">".下行速率KB."</td>";
+        print "<td class=\"label\"> $download_rate </td>";
+        print "</tr>\n";
+        print "<tr>";
+        print "<td class=\"label\" style=\"width:120px;\">&nbsp;</td>";
+        print "<td class=\"label\">".上行速率KB."</td>";
+        print "<td class=\"label\"> $upload_rate </td>";
+        print "</tr>\n";
+        print "<tr>";
+        print "<td class=\"label\" style=\"width:120px;\">&nbsp;</td>";
+        print "<td class=\"label\">".硬盘使用情况（）."</td>";
+        print "<td class=\"label\"> $partition_total </td>";
+        print "<td class=\"label\"> $partition_used </td>";
+        print "<td class=\"label\"> $partition_pct </td>";
+        print "</tr>\n";
         print "<br/>\n";
-        write_data_table('Top 10 days', $top);
+        #write_data_table('Top 10 days', $top);
     }
 
 
