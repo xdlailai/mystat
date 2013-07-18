@@ -29,6 +29,11 @@ int main(int argc, const char *argv[])
     printf("listen error!");
     exit(1);
   }
+  int optval = 1;
+  int optlen = sizeof(optval);
+  if(setsockopt(server_socket, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen) < 0){
+    printf("keepalive error");
+  }
   while(1){
     struct sockaddr_in client_addr;
     socklen_t length = sizeof(client_addr);

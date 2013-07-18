@@ -38,29 +38,33 @@ int main(int argc, const char *argv[])
     printf("connect error");
     exit(1);
   }
-  char file_name[32] = "dataxml";
-  char buffer[BUFFER_SIZE];
-  bzero(buffer, BUFFER_SIZE);
-  strncpy(buffer, file_name, strlen(file_name));
-  write(client_socket,buffer,strlen(buffer));
+  while(1){
 
-  FILE *fp = fopen(file_name, "r");
-  if(NULL == fp){
-    printf("FILE not found");
-    exit(1);
-  }
-  bzero(buffer, BUFFER_SIZE);
-  int file_block_length = 0;
-  while((file_block_length = fread(buffer,sizeof(char), BUFFER_SIZE, fp))>0){
-    printf("file_block_length = %d\n", file_block_length);
-    if(send(client_socket,buffer,file_block_length,0) < 0){
-    printf("send file content failed\n");
-    break;
+    char file_name[32] = "dataxml";
+    char buffer[BUFFER_SIZE];
+    bzero(buffer, BUFFER_SIZE);
+    strncpy(buffer, file_name, strlen(file_name));
+    write(client_socket,buffer,strlen(buffer));
+
+    FILE *fp = fopen(file_name, "r");
+    if(NULL == fp){
+      printf("FILE not found");
+      exit(1);
     }
     bzero(buffer, BUFFER_SIZE);
+    int file_block_length = 0;
+    while((file_block_length = fread(buffer,sizeof(char), BUFFER_SIZE, fp))>0){
+      printf("file_block_length = %d\n", file_block_length);
+      if(send(client_socket,buffer,file_block_length,0) < 0){
+      printf("send file content failed\n");
+      break;
+      }
+      bzero(buffer, BUFFER_SIZE);
+    }
+    fclose(fp);
+    printf("file:/t %s transfer finished\n", file_name);
+    sleep(5);
   }
-  fclose(fp);
-  printf("file:/t %s transfer finished\n", file_name);
   close(client_socket);
 
   return 0;
