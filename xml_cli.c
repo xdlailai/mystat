@@ -38,7 +38,7 @@ int main(int argc, const char *argv[])
     printf("connect error");
     exit(1);
   }
-  while(1){
+//  while(1){
 
     char file_name[32] = "dataxml";
     char buffer[BUFFER_SIZE];
@@ -64,7 +64,7 @@ int main(int argc, const char *argv[])
     fclose(fp);
     printf("file:/t %s transfer finished\n", file_name);
     sleep(5);
-  }
+  //}
   close(client_socket);
 
   return 0;
