@@ -3,10 +3,12 @@
 #include "counter.h"
 #include "pthread.h"
 #include "mod.h"
+#include "xml_cli.h"
 void print_data()
 {
   while(1){
     showxml();
+    transXml();
     sleep(3);
   }
 }
@@ -48,10 +50,17 @@ void get_traffic_record()
   }
 }
 
+void tranXml()
+{
+  while(1){
+    transXml();
+    sleep(5);
+  }
+}
 
 int main(int argc, const char *argv[])
 {
-  pthread_t pd_listen, pd_cpu, pd_mem, pd_load, pd_partition, pd_traffic;
+  pthread_t pd_listen, pd_cpu, pd_mem, pd_load, pd_partition, pd_traffic, pd_tranxml;
   int error;
   error = pthread_create(&pd_listen, NULL, print_data, NULL);
   if(error!=0)
@@ -71,6 +80,9 @@ int main(int argc, const char *argv[])
   error = pthread_create(&pd_traffic, NULL, get_traffic_record, NULL);
   if(error!=0)
     printf("error pthread_traffic");
+//  error = pthread_create(&pd_tranxml, NULL, tranXml, NULL);
+//  if(error!=0)
+//    printf("error transfer xml file");
 //  daemonize();
   init();
   listenpck();

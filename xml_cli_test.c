@@ -20,7 +20,7 @@ int transXml()
   struct sockaddr_in server_addr;
   bzero(&server_addr, sizeof(server_addr));
   server_addr.sin_family = AF_INET;
-  if(inet_pton(AF_INET, SERVERIP, &server_addr.sin_addr) <= 0){
+  if(inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0){
     printf("inet_pton error!");
     exit(1);
   }
@@ -31,7 +31,7 @@ int transXml()
   }
 //  while(1){
 
-    char file_name[32] = XMLBASEDIR;
+    char file_name[32] = "dataxml";
     char buffer[BUFFER_SIZE];
     bzero(buffer, BUFFER_SIZE);
     strncpy(buffer, file_name, strlen(file_name));
@@ -58,5 +58,10 @@ int transXml()
   //}
   close(client_socket);
 
+  return 0;
+}
+int main(int argc, const char *argv[])
+{
+  transXml();
   return 0;
 }

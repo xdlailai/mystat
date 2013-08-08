@@ -19,9 +19,13 @@
 #include <fcntl.h>
 #include <signal.h>
 
-#define DATABASEDIR  "/home/fly100"
-#define XMLBASEDIR "/var/www/dataxml"
-#define DEFIFACE "eth0"
+/*重要的设置～*/
+
+
+#define DATABASEDIR  "." /*流量数据文件数据库的存储目录 (.代表当前目录，数据库文件名是DEFIFACE)*/
+#define XMLBASEDIR "xml_237" /*xml数据文件的存储目录*/
+#define DEFIFACE "eth0" /*流量统计的网卡接口*/
+#define SERVERIP "202.117.120.235"
 #define LOCKTRYLIMIT 5
 #define MYSTATVERSION "1.11"
 #define XMLVERSION 1

@@ -8,8 +8,9 @@
 #include <errno.h>
 
 #define SERVER_PORT 6666
-#define BUFFER_SIZE 2000
+#define BUFFER_SIZE 20000
 
+/*子进程处理*/
 void sig_chld(int signo)
 {
   pid_t pid;
@@ -41,11 +42,20 @@ int main(int argc, const char *argv[])
     printf("listen error!");
     exit(1);
   }
-  int optval = 1;
-  int optlen = sizeof(optval);
-  if(setsockopt(server_socket, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen) < 0){
+  //int optval = 1;
+  //int err;
+  /*if(setsockopt(server_socket, SOL_SOCKET, SO_KEEPALIVE, &optval, optlen) < 0){
     printf("keepalive error");
   }
+  */
+  //int rcv_size = 0;
+  //socklen_t optlen;
+  //optlen = sizeof(rcv_size);
+  //err = getsockopt(server_socket, SOL_SOCKET, SO_RCVBUF, &rcv_size, &optlen);
+  //if(err < 0){
+  //  printf("获得接受缓冲区大小错误\n");
+  //}
+  //printf("jieshou %d\n",rcv_size);
   signal(SIGCHLD, sig_chld);
   while(1){
     struct sockaddr_in client_addr;
@@ -55,9 +65,14 @@ int main(int argc, const char *argv[])
       if(errno == EINTR)
         continue;
       else
-        printf("Server Accept Failed !/n");
+        printf("Server Accept Failed !\n");
 
     }
+  //err = getsockopt(new_server_socket, SOL_SOCKET, SO_RCVBUF, &rcv_size, &optlen);
+  //if(err < 0){
+  //  printf("获得接受缓冲区大小错误\n");
+  //}
+  //printf("jieshou %d\n",rcv_size);
 
    if((childpid = fork()) == 0)
    {
@@ -66,33 +81,40 @@ int main(int argc, const char *argv[])
         bzero(buffer, BUFFER_SIZE);
         length = recv(new_server_socket,buffer,BUFFER_SIZE,0);
         if(length < 0){
-          printf("Server Recieve Data Failed!/n");
+          printf("Server Recieve Data Failed!\n");
           break;
         }
         char file_name[32];
         bzero(file_name,32);
         strncpy(file_name,buffer,strlen(buffer));
 
-        FILE *fp = fopen(file_name,"w");
-        if(NULL == fp){
-          printf("File:/t%s Can Not open to write/n", file_name);
+        bzero(buffer, BUFFER_SIZE);
+        printf("receive\n");
+
+        length = recv(new_server_socket,buffer,BUFFER_SIZE,0);
+
+        if(length < 0){
+          printf("Recieve data from client failed!\n");
           break;
         }
-        bzero(buffer, BUFFER_SIZE);
-        while(length = recv(new_server_socket,buffer,BUFFER_SIZE,0))
-        {
-          if(length < 0){
-            printf("Recieve data from client failed!/n");
-            break;
-          }
-          int write_length = fwrite(buffer,sizeof(char),length,fp);
-          if(write_length<length){
-            printf("File:/t%s write failed\n",file_name);
-            break;
-          }
-          bzero(buffer,BUFFER_SIZE);
+        printf("write file %d\n", length);
+        FILE *fp = fopen(file_name,"w");
+        if(NULL == fp){
+          printf("File:\t%s Can Not open to write\n", file_name);
+          break;
         }
-        printf("Rececive File:/t %s finished\n", file_name);
+        fprintf(fp, "%s", buffer);
+         // printf("begin write file\n");
+/*          int write_length = fwrite(buffer,sizeof(char),length,fp);
+          printf("write_length %d\n", write_length);
+          if(write_length<length){
+            printf("File:\t%s write failed\n",file_name);
+            break;
+          }
+          */
+        bzero(buffer,BUFFER_SIZE);
+
+        printf("Rececive File:\t %s  finished\n", file_name);
         fclose(fp);
        close(new_server_socket);
        exit(0);
