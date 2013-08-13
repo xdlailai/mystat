@@ -1,5 +1,5 @@
 CC = gcc
-LDLIBS = -lpcap -lpthread
+LDLIBS = -lpcap -lpthread -g
 OBJS = mystat.o common.o counter.o dbaccess.o dbshow.o dbxml.o mod_cpu.o mod_mem.o mod_load.o mod_partition.o mod_traffic.o xml_cli.o
 
 all: $(OBJS)

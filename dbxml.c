@@ -4,6 +4,10 @@
 void showxml(void)
 {
   dataxml = fopen(XMLBASEDIR, "w");
+  if(!dataxml){
+    perror("open xmlfile fail\n");
+    return;
+  }
   int i;
 //  fprintf(dataxml, "<?xml version=\"%s\" xmlversion=\"%d\"?>\n", MYSTATVERSION, XMLVERSION);
   fprintf(dataxml, " <interface id=\"%s\">\n", data.interface);
@@ -65,8 +69,15 @@ void showxml(void)
   fprintf(dataxml, "  </info>\n");
   fprintf(dataxml, " </interface>\n");
 
-
-  fclose(dataxml);
+  int b = fflush(dataxml);
+  if(b != 0){
+    perror("fflush failed!\n");
+  }
+  int a = 1;
+  a = fclose(dataxml);
+  if(a != 0){
+    perror("fclose fail!\n");
+  }
 }
 
 void xmldate(time_t *date, int type)

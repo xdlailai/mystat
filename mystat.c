@@ -9,7 +9,7 @@ void print_data()
   while(1){
     showxml();
     transXml();
-    sleep(3);
+    sleep(10);
   }
 }
 void get_cpu_record()

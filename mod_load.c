@@ -20,6 +20,7 @@ void read_load_stats()
   statload.load_avg_5 += load_tmp[1] * 100;
   statload.load_avg_15 += load_tmp[2] * 100;
   statload.load_avg = statload.load_avg_1 / 100.0;
+  fclose(fp);
 
 }
 

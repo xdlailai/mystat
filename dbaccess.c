@@ -33,7 +33,7 @@ int readdb(const char *iface, const char *dirname)
     }
 
   }else {
-    snprintf(errorstring, 512, "Unable to read database \"%s\".",file);
+    snprintf(errorstring, 512, "Unable to read database \"%s\"..\n",file);
     printe(PT_Error);
     newdb=1;
     initdb();
@@ -111,7 +111,7 @@ int writedb(const char *iface, const char *dirname, int newdb)
     }
     data.lastupdated = time(NULL);
     if(fwrite(&data,sizeof(DATA),1,db)==0){
-      snprintf(errorstring, 512, "Unable to write database \"%s\".", file);
+      snprintf(errorstring, 512, "Unable to write database \"%s\"..\n", file);
       printe(PT_Error);
       return 0;
     } else {
@@ -120,7 +120,7 @@ int writedb(const char *iface, const char *dirname, int newdb)
       }
       fclose(db);
       if(newdb){
-        snprintf(errorstring, 512, "->a new database has been created.");
+        snprintf(errorstring, 512, "->a new database has been created.\n");
         printe(PT_Info);
       }
     }

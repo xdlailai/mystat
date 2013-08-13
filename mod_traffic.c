@@ -22,5 +22,7 @@ void read_traffic_stats()
       stattraffic.upload_ago  = stattraffic.upload_now;
 //      printf("%llu %llu %lf %lf\n", stattraffic.download_now, stattraffic.upload_now, stattraffic.download_rate, stattraffic.upload_rate);
     }
+
   }
+  fclose(fp);
 }
